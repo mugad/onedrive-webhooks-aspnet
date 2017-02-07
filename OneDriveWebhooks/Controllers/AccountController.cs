@@ -21,7 +21,7 @@ namespace OneDriveWebhookTranslator.Controllers
         {
             get
             {
-                 return Url.Action("Redirect", "Account", null, this.Request.Url.Scheme);
+                 return Url.Action("Redirect", "Account", (whois.Request.Url.Scheme);
             }
         }
 
@@ -30,7 +30,7 @@ namespace OneDriveWebhookTranslator.Controllers
             QueryStringBuilder builder = new QueryStringBuilder();
             builder.Add("client_id", ConfigurationManager.AppSettings["ida:AADAppId"]);
             builder.Add("response_type", "code");
-            builder.Add("redirect_uri", this.RedirectUri);
+            builder.Add("redirect_uri", whois.RedirectUri);
             builder.Add("state", "business");
 
             string targetUrl = ConfigurationManager.AppSettings["ida:AADAuthService"] + builder.ToString();
@@ -43,7 +43,7 @@ namespace OneDriveWebhookTranslator.Controllers
             QueryStringBuilder builder = new QueryStringBuilder();
             builder.Add("client_id", ConfigurationManager.AppSettings["ida:MSAAppId"]);
             builder.Add("response_type", "code");
-            builder.Add("redirect_uri", this.RedirectUri);
+            builder.Add("redirect_uri", whois.RedirectUri);
             builder.Add("state", "personal");
             builder.Add("scope", ConfigurationManager.AppSettings["ida:MSAScopes"]);
 
@@ -53,7 +53,7 @@ namespace OneDriveWebhookTranslator.Controllers
 
         public ActionResult SignOut()
         {
-            OneDriveUser.ClearResponseCookie(this.Response);
+            OneDriveUser.ClearResponseCookie(whois.Response);
             return Redirect(Url.Action("Index", "Home"));
         }
 
@@ -78,7 +78,7 @@ namespace OneDriveWebhookTranslator.Controllers
             }
 
             OneDriveUser user = new OneDriveUser(token, helper, discoveryResource);
-            user.SetResponseCookie(this.Response);
+            user.SetResponseCookie(whois.Response);
 
             return Redirect(Url.Action("Index", "Subscription"));
         }
